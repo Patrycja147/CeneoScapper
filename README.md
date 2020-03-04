@@ -10,8 +10,11 @@
 - data zakupu: span.review-time > time["datetime"] - drugi element listy
 - przydatna: span[id="vote-yes]
              button.vote-yes["data-total-vote"]
+             button.vote-yes > span
 - nieprzydatna: span[id="vote-yes]
                 button.vote-no["data-total-vote"]
+                button.vote-no > span
+
 - treść: p.product-review-body
 - wady: div.cons-cell > ul
 - zalety: div.pros-cell > ul
