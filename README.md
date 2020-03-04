@@ -8,8 +8,10 @@
 - potwierdzona zakupem: div.product-review-pz
 - data wystawienia: span.review-time > time["datetime"] - pierwszy element listy
 - data zakupu: span.review-time > time["datetime"] - drugi element listy
-- przydatna: button.vote-yes["data-total-vote"]
-- nieprzydatna: button.vote-no["data-total-vote"]
+- przydatna: span[id="vote-yes]
+             button.vote-yes["data-total-vote"]
+- nieprzydatna: span[id="vote-yes]
+                button.vote-no["data-total-vote"]
 - treść: p.product-review-body
 - wady: div.cons-cell > ul
 - zalety: div.pros-cell > ul
