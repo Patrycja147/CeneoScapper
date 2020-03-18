@@ -20,7 +20,7 @@ for opinion in opinions:
     except AttributeError:
         purchased= None
 
-    dates = opinion.find("span","review-time")find_all("time")
+    dates = opinion.find("span","review-time").find_all("time")
     review_date = dates.pop(0)["datetime"]
     try:
         purchase_date= dates.pop(0)["datatime"]
@@ -41,3 +41,4 @@ for opinion in opinions:
     except AttributeError:
         cons = None
 
+print(cons)
