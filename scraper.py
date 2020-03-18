@@ -8,25 +8,36 @@ url="https://www.ceneo.pl/49541116#tab=reviews"
 #podanie kodu html
 page_response = requests.get(url)
 page_tree = BeautifulSoup(page_response.text, 'html.parser')
-
-#wydobycie z html strony fragmentu z opiniami opinii
 opinions = page_tree.find_all('li','review-box')
 
-#wydobycie skladowych
+for opinion in opinions:
+    opinion_id=opinion["data-entry-id"]
+    author = opinion.find('div', 'reviewer-name-line').string
+    recomendation = opinion.find('div',"product-review-summary").find('em').string
+    stars = opinion.find('span','review-score-count').string
+    try:
+        purchased = opinion.find('div',"product-review-pz").string
+    except AttributeError:
+        purchased= None
 
-opinion=opinions.pop()
-opinion_id=opinion["data-entry-id"]
-author = opinion.find('div', 'reviewer-name-line').string
-recomendation = opinion.find('div',"product-review-summary").find('em').string
-stars = opinion.find('span','review-score-count').string
-purchased = opinion.find('div',"product-review-pz").string
+    dates = opinion.find("span","review-time")find_all("time")
+    review_date = dates.pop(0)["datetime"]
+    try:
+        purchase_date= dates.pop(0)["datatime"]
+    except IndexError:
+        purchased= None
 
-# - data wystawienia: span.review-time > time["datetime"] - pierwszy element listy
-# - data zakupu: span.review-time > time["datetime"] - drugi element listy
+    useful = opinion.find('button','vote-yes').find('span').string
+    useless = opinion.find('button','vote-no').find('span').string
+    content = opinion.find('p','product-review-body').get_text()
 
-useful = opinion.find('button','vote-yes').find('span').string
-useless = opinion.find('button','vote-no').find('span').string
-content = opinion.find('p','product-review-body').get_text()
+    try:
+        pros = opinion.find("div","pros-cell").find('ul').get_text()
+    except AttributeError:
+        pros= None
 
-# - wady: div.cons-cell > ul
-# - zalety: div.pros-cell > ul
+    try:
+        cons = opinion.find("div","cons-cell").find('ul').get_text()
+    except AttributeError:
+        cons = None
+
