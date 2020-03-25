@@ -6,9 +6,9 @@ import json
 
 #adres url strony z opiniami
 url_prefix = "https://www.ceneo.pl"
-product_id = input("Podaj kod produktu")
-url_postfix = product_id + "#tab=reviews"
-url = url_prefix+url_postfix
+product_id = input("Podaj kod produktu: ")
+url_postfix = "#tab=reviews"
+url = url_prefix+"/"+product_id+url_postfix
 
 #lista na wszysstkie opinie 
 opinions_list=[]
@@ -16,14 +16,19 @@ opinions_list=[]
 while url:
 
     #podanie kodu html
-    page_response = requests.get(url)
-    page_tree = BeautifulSoup(page_response.text, 'html.parser')
+    page_respons = requests.get(url)
+    page_tree = BeautifulSoup(page_respons.text, 'html.parser')
+   
     opinions = page_tree.find_all('li','review-box')
 
     for opinion in opinions:
-        opinion_id=opinion["data-entry-id"]
+        opinion_id = opinion['data-entry-id']
         author = opinion.find('div', 'reviewer-name-line').string
-        recomendation = opinion.find('div',"product-review-summary").find('em').string
+        try:
+            recommendation = opinion.find("div","product-review-summary").find("em").string
+        except AttributeError:
+            recommendation = None
+
         stars = opinion.find('span','review-score-count').string
         try:
             purchased = opinion.find('div',"product-review-pz").find("em").string
@@ -33,9 +38,9 @@ while url:
         dates = opinion.find("span","review-time").find_all("time")
         review_date = dates.pop(0)["datetime"]
         try:
-            purchase_date= dates.pop(0)["datatime"]
+            purchase_date= dates.pop(0)["datetime"]
         except IndexError:
-            purchased= None
+            purchase_date= None
 
         useful = opinion.find('button','vote-yes').find('span').string
         useless = opinion.find('button','vote-no').find('span').string
@@ -53,23 +58,23 @@ while url:
 
         opinion_dict = {
             "opinion_id":opinion_id,
-            "recomendation":recomendation,
+            "recommendation":recommendation,
             "stars":stars,
-            "content":comptent,
+            "content":content,
             "author":author,
             "pros":pros,
             "cons":cons,
             "usefull":useful,
             "useless":useless,
             "purchased":purchased,
-            "pruchased_date":purchase_date,
+            "pruchase_date":purchase_date,
             "review-date":review_date,
         }
         opinions_list.append(opinion_dict)
 
     try:
         url = url_prefix + page_tree.find("a","pagination_next")["href"]
-    except AttributeError:
+    except TypeError:
         url = None
     print(url)
 
