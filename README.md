@@ -24,5 +24,5 @@
 - przechodzenie po stronach z opiniami
 - eksport opinii do pliku (.csv lub .xlsx lub .json)
 ## Etap 4 
--tranformacja danych
--refaktoryzacja
+- tranformacja danych
+- refaktoryzacja
