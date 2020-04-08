@@ -27,6 +27,14 @@ tags = {
     "purchased":["div","product-review-pz","em"],
 }
 
+#f do usuwania znakow format
+def remove_whitespaces(string):
+    try:
+        
+        return string.replace("\n",", ").replace("\r",", ")
+    except AttributeError:
+        pass
+
 #adres url strony z opiniami
 url_prefix = "https://www.ceneo.pl"
 product_id = input("Podaj kod produktu: ")
@@ -50,7 +58,12 @@ while url:
 
             features["purchased"] = (features["purchased"] == "Opinia potwierdzona zakupem")
 
-            features['opinion_id'] =  opinion["data-entry-id"]
+            features['opinion_id'] =  int(opinion["data-entry-id"])
+            features["usefull"]=int(features["usefull"])
+            features["useless"]=int(features["useless"])
+            features["content"] = remove_whitespaces(features["content"])
+            features["pros"] = remove_whitespaces(features["pros"])
+            features["cons"] = remove_whitespaces(features["cons"])
             dates = opinion.find("span","review-time").find_all("time")
             features['review_date'] = dates.pop(0)["datetime"]
             try:
@@ -73,4 +86,3 @@ with open("./opinions_json/"+product_id+".json","w",encoding="utf-8")as fp:
     
 
 print(len(opinions_list))
-#pprint.pprint(opinions_list)
