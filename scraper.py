@@ -17,7 +17,7 @@ def extract_feature(opinion, tag, tag_class, child=None):
 
 tags = {
     "recommendation":["div","product-review-summary","em"],
-    "stars":["div", "review-score-count"],
+    "stars":["span", "review-score-count"],
     "content":['p','product-review-body'],
     "author":["div", "review-name-line"],
     "pros":["div","pros-cell",'ul'],
@@ -30,7 +30,6 @@ tags = {
 #f do usuwania znakow format
 def remove_whitespaces(string):
     try:
-        
         return string.replace("\n",", ").replace("\r",", ")
     except AttributeError:
         pass
@@ -59,8 +58,8 @@ while url:
             features["purchased"] = (features["purchased"] == "Opinia potwierdzona zakupem")
 
             features['opinion_id'] =  int(opinion["data-entry-id"])
-            features["usefull"]=int(features["usefull"])
-            features["useless"]=int(features["useless"])
+            features["usefull"] = int(features["usefull"])
+            features["useless"] = int(features["useless"])
             features["content"] = remove_whitespaces(features["content"])
             features["pros"] = remove_whitespaces(features["pros"])
             features["cons"] = remove_whitespaces(features["cons"])
@@ -74,7 +73,7 @@ while url:
             opinions_list.append(features)
 
     try:
-        url = url_prefix + page_tree.find("a","pagination_next")["href"]
+        url = url_prefix + page_tree.find("a","pagination__next")["href"]
     except TypeError:
         url = None
     print(url)
