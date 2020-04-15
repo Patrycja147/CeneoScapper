@@ -32,8 +32,7 @@ recommendation = opinions["recommendation"].value_counts()
 fig, ax = plt.subplots()
 recommendation.plot.pie(label="",autopct="%.1f%%", colors=["purple","gold"])
 ax.set_title("Częstość występowania ocen")
-ax.set_xlabel('Udział rekomendacji w ogólnej liczbie opinii')
-ax.set_ylabel("Liczba opinii")
+
 plt.savefig("./figures_png/"+product_id+"_pie.png")
 plt.close()
 

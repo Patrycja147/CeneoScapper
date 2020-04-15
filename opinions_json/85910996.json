@@ -6,7 +6,7 @@
         "author": null,
         "pros": null,
         "cons": null,
-        "usefull": 0,
+        "usefull": 1,
         "useless": 1,
         "purchased": true,
         "opinion_id": 11629988,
@@ -174,7 +174,7 @@
         "author": null,
         "pros": "asystent google, długi czas działania, dobrze się trzymają w uchu, genialny bass, jakość dźwięku, rewelacyjna jakość rozmów, wygląd, wygoda używania",
         "cons": "trochę niewygodne na dłużej w uszach",
-        "usefull": 0,
+        "usefull": 1,
         "useless": 0,
         "purchased": false,
         "opinion_id": 11581951,
@@ -236,6 +236,20 @@
         "opinion_id": 12032505,
         "review_date": "2020-04-01 13:15:51",
         "purchase_date": "2020-03-01 12:05:05"
+    },
+    {
+        "recommendation": "Polecam",
+        "stars": "5/5",
+        "content": "Bezproblemowa łączność z innymi urządzeniami, świetna jakość dźwięku oraz doskonały mikrofon.",
+        "author": null,
+        "pros": null,
+        "cons": null,
+        "usefull": 0,
+        "useless": 0,
+        "purchased": true,
+        "opinion_id": 12135216,
+        "review_date": "2020-04-14 09:21:33",
+        "purchase_date": "2020-04-06 21:25:48"
     },
     {
         "recommendation": "Polecam",
@@ -392,20 +406,6 @@
         "purchase_date": "2019-12-30 12:08:38"
     },
     {
-        "recommendation": "Polecam",
-        "stars": "5/5",
-        "content": "Super produkt w rozsądnej cenie",
-        "author": null,
-        "pros": "długi czas działania, dobrze się trzymają w uchu, genialny bass, rewelacyjna jakość rozmów, trochę niewygodne na dłużej w uszach, wygląd, wygoda używania",
-        "cons": null,
-        "usefull": 0,
-        "useless": 0,
-        "purchased": true,
-        "opinion_id": 11472054,
-        "review_date": "2019-12-22 14:13:06",
-        "purchase_date": "2019-11-21 20:11:09"
-    },
-    {
         "recommendation": "Nie polecam",
         "stars": "0,5/5",
         "content": "brak było kabelka - nadal się nie mogę doprosić",
@@ -418,6 +418,20 @@
         "opinion_id": 11827503,
         "review_date": "2020-02-29 15:53:40",
         "purchase_date": "2020-01-29 20:19:26"
+    },
+    {
+        "recommendation": "Polecam",
+        "stars": "5/5",
+        "content": "Super produkt w rozsądnej cenie",
+        "author": null,
+        "pros": "długi czas działania, dobrze się trzymają w uchu, genialny bass, rewelacyjna jakość rozmów, trochę niewygodne na dłużej w uszach, wygląd, wygoda używania",
+        "cons": null,
+        "usefull": 0,
+        "useless": 0,
+        "purchased": true,
+        "opinion_id": 11472054,
+        "review_date": "2019-12-22 14:13:06",
+        "purchase_date": "2019-11-21 20:11:09"
     },
     {
         "recommendation": "Polecam",
