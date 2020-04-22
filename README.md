@@ -30,3 +30,17 @@
 - Zapis danych do obiektu dataframe(ramka danych)
 - obliczenia na danych w ramce danych
 - wykonanie wykresów na podstawie danych z ramki
+## Etap 6 - przygotowanie interface'u webowego aplikacji (Flask)
+-/yourapp  
+        /run.py  
+        /config.py  
+        /app  
+            /__init__.py
+            /views.py  
+            /models.py  
+            /static/  
+                /main.css
+            /templates/  
+                /base.html  
+        /requirements.txt  
+        /yourappenv
