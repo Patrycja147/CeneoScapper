@@ -45,5 +45,5 @@ purchased = opinions['purchased'].sum()
 print(stars)
 
 stars_purchased = pd.crosstab(opinions['stars'],opinions['purchased'])
-
+print(stars_purchased)
 #poszukaj jak procenty wyprowadzić pod "polecam, nie polecam" 
