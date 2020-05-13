@@ -32,9 +32,10 @@
 - wykonanie wykresów na podstawie danych z ramki
 ## Etap 6 - przygotowanie interface'u webowego aplikacji (Flask)
 -Struktura aplikacji /CeneoScrapper
->/run.py  
+> /CeneoScrapper
+>>/run.py  
 >>/config.py  
->>/app  
+>>/app/
 >>>/__init__.py
 >>>/views.py  
 >>>/models.py 
@@ -46,9 +47,9 @@
 >>>>/main.css 
 >>>/templates/  
 >>>>/layout.html  
->>/requirements.txt  
->>/README.md
->>/.venv
+>>>/requirements.txt  
+>>>/README.md
+>>>/.venv/
 
 -widoki
 -routings
