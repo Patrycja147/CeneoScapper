@@ -3,8 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import textwrap
 import json
-from app import app
-from utils import extract_element, remove_whitespaces
+from app.utils import extract_element, remove_whitespaces
 
 class Product:
     def __init__(self, product_id = None, name = None, opinions = []):
@@ -21,9 +20,9 @@ class Product:
         url = url_prefix+"/"+self.product_id+url_postfix
         page_respons = requests.get(url)
         page_tree = BeautifulSoup(page_respons.text, 'html.parser')
-        self.name = page_tree.find("h1","product-name").get_text().strip()
+        self.name = extract_element(page_tree,"h1","product-name") 
         try:
-            opinions_count = int(page_tree.find("a","product-reviews-link").find("span").get_text().strip())
+            opinions_count = int(extract_element(page_tree,"a","product-reviews-link","span"))
         except AttributeError:
             opinions_count = 0
         if opinions_count > 0:
@@ -46,7 +45,7 @@ class Product:
                 except TypeError:
                     url = None
     def save_product(self):
-            with open("./app/opinions_json/"+product_id+'.json', 'w', encoding="utf-8") as fp:
+            with open("./app/opinions_json/"+self.product_id+'.json', 'w', encoding="utf-8") as fp:
                 json.dump(self.opinions, fp, ensure_ascii=False, indent=4, separators=(',', ': '))
 
 
@@ -89,11 +88,11 @@ class Opinion:
             setattr(self, key, extract_element(opinion, *args))
         self.opinion_id = int(opinion["data-entry-id"])
         try:
-            self.pros = ", ".join(pros.get.get_text().strip() for pros in opinion.find["div","review-feature__title--positives"].find_next_siblings("div",))
+            self.pros = ", ".join(pros.get_text().strip() for pros in opinion.find["div","review-feature__title--positives"].find_next_siblings("div","review-feature__item"))
         except AttributeError:
             self.pros = None
         try:
-            self.cons = ", ".join(cons.get.get_text().strip() for cons in opinion.find["div","review-feature__title--negatives"].find_next_siblings("div",))
+            self.cons = ", ".join(cons.get_text().strip() for cons in opinion.find["div","review-feature__title--negatives"].find_next_siblings("div","review-feature__item"))
         except AttributeError:
             self.cons = None
         dates = opinion.find("span", "user-post__published").find_all("time")

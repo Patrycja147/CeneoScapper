@@ -5,7 +5,7 @@ from flask import Flask
 app = Flask(__name__)
 
 #import widoków/routingów z aplikacji
-from app import views
+import views
 
 #uruchomienie aplikacji
 if  __name__=='__main__':
