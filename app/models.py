@@ -2,6 +2,9 @@
 import requests
 from bs4 import BeautifulSoup
 import textwrap
+import json
+from app import app
+from utils import extract_element, remove_whitespaces
 
 class Product:
     def __init__(self, product_id = None, name = None, opinions = []):
@@ -30,41 +33,38 @@ class Product:
                 page_tree = BeautifulSoup(page_respons.text, 'html.parser')
 
                 #wydobycie z kodu HTML strony fragmentów odpowiadajcych poszczególnym opiniom 
-                opinions = page_tree.find_all("li", "js_product-review")
+                opinions = page_tree.find_all("div", "js_product-review")
 
                 #wydobycie składowych dla pojedynczej opinii
                 for opinion in opinions:
                     op = Opinion()
                     op.extract_opinion(opinion)
-                    op.transform_opinion
+                    op.transform_opinion()
                     self.opinions.append(op)
                 try:
                     url = url_prefix+page_tree.find("a", "pagination__next")["href"]
                 except TypeError:
                     url = None
+    def save_product(self):
+            with open("./app/opinions_json/"+product_id+'.json', 'w', encoding="utf-8") as fp:
+                json.dump(self.opinions, fp, ensure_ascii=False, indent=4, separators=(',', ': '))
+
 
 class Opinion:
     #słownik z składowymi opinii i ich selektorami
     tags = {
-        "recommendation":["div","product-review-summary", "em"],
-        "stars":["span", "review-score-count"],
-        "content":["p","product-review-body"],
-        "author":["div", "reviewer-name-line"],
+        "recommendation":["span","user-post__author-recomendation", "em"],
+        "stars":["span", "user-post__score-count"],
+        "content":["div","user-post__text"],
+        "author":["span", "user-post__author-name"],
         "pros":["div", "pros-cell", "ul"],
         "cons":["div", "cons-cell", "ul"], 
         "useful":["button","vote-yes", "span"],
         "useless":["button","vote-no", "span"],
-        "purchased":["div", "product-review-pz", "em"]
+        "purchased":["div", "review-pz", "em"]
     }
-    #funkcja do ekstrkcji składowych opinii
-    def extract_feature(opinion, tag, tag_class, child=None):
-        try:
-            if child:
-                return opinion.find(tag,tag_class).find(child).get_text().strip()
-            else:
-                return opinion.find(tag,tag_class).get_text().strip()
-        except AttributeError:
-            return None
+
+
     #definicja klnstruktora (inicjalizatora) klasy Opinion
     def __init__(self, opinion_id=None, author=None, recommendation=None, stars=None, content=None, pros=None, cons=None, 
                  useful=None, useless=None, purchased=None, purchase_date=None, review_date=None):
@@ -81,29 +81,35 @@ class Opinion:
         self.purchase_date = purchase_date
         self.review_date = review_date
     def __str__(self):
-        return f'Opinion id: {self.opinion_id}\nAuthor: {self.author}\nStars: {self.stars}\n'
+        return f'Opinion id: {self.opinion_id}\nAuthor: {self.author}\nStars: {self.stars}\nZalety: {self.pros}'
+    def __repr__(self):
+        pass
     def extract_opinion(self, opinion):
-        for key, args in self.tags:
-            setattr(self, key, extract_feature(opinion, *args))
+        for key, args in self.tags.items():
+            setattr(self, key, extract_element(opinion, *args))
         self.opinion_id = int(opinion["data-entry-id"])
-        dates = opinion.find("span", "review-time").find_all("time")
+        try:
+            self.pros = ", ".join(pros.get.get_text().strip() for pros in opinion.find["div","review-feature__title--positives"].find_next_siblings("div",))
+        except AttributeError:
+            self.pros = None
+        try:
+            self.cons = ", ".join(cons.get.get_text().strip() for cons in opinion.find["div","review-feature__title--negatives"].find_next_siblings("div",))
+        except AttributeError:
+            self.cons = None
+        dates = opinion.find("span", "user-post__published").find_all("time")
         self.review_date = dates.pop(0)["datetime"]
         try:
             self.purchase_date = dates.pop(0)["datetime"]
         except IndexError:
             self.purchase_date = None
-
     def transform_opinion(self):
         self.purchased = (self.purchased=="Opinia potwierdzona zakupem")
         self.useful = int(self.useful)
         self.useless = int(self.useless)
         self.content = remove_whitespaces(self.content)
-        self.pros = remove_whitespaces(self.pros)
-        self.cons = remove_whitespaces(self.cons)
 
 
-opinion1 = Opinion()
-opinion2 = Opinion()
-product = Product("79688141")
+
+product = Product("35678451")
 product.extract_product()
 print(product)
