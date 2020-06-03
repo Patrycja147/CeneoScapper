@@ -2,9 +2,10 @@ from app import app
 from flask import render_template, request, redirect, url_for
 from flaskext.markdown import Markdown
 from app.forms import ProductForm
-import requests
 from app.models import Opinion, Product
-
+import requests
+import pandas as pd
+import os
 Markdown(app)
 
 app.config['SECRET_KEY'] = "TajemniczyMysiSprzęt"
@@ -26,21 +27,39 @@ def extract():
     form = ProductForm()
     if form.validate_on_submit():
         product_id = form.product_id.data
-        page_respons = requests.get("https://www.ceneo.pl"+product_id)
-        if page_respons.status_code == requests.codes["ok"]:
+        page_respons = requests.get("https://www.ceneo.pl/"+product_id)
+        if page_respons.status_code == requests.codes['ok']:
             product = Product(product_id)
             product.extract_product()
+            
             product.save_product()
-
             return redirect(url_for("product", id=product_id))
         else:
-            form.product_id.errors.append("Podana wartość nie jest poprawnym kodem produktu.")
+            form.product_id.errors.append("Podana wartość nie jest poprawnym kodem ptoduktu.")
     return render_template("extract.html", form=form)
 
 @app.route('/product/<id>')
 def product(id):
+    product = Product(id)
+    product.read_product()
+    opinions = pd.DataFrame.from_records([opinion.__dict__() for opinion in product.opinions])
+    opinions["stars"] = opinions["stars"].map(lambda x: float(x.split("/")[0].replace(",", ".")))
+    return render_template(
+        "product.html",
+        tables=[
+            opinions.to_html(
+                classes='table table-bordered table-sm table-responsive',
+                table_id = "opinions",
+                index = False
+            )
+        ], 
+        titles=opinions.columns.values 
+    )
+
     pass
 
 @app.route('/products')
 def products():
-    pass
+    products = os.listdir("app/opinions_json")
+    products = [product.replace(".json"," ")for product in products]
+    return render_template("products.html", products=products)
