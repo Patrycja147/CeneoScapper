@@ -8,7 +8,6 @@ def extract_element(dom_tree, tag, tag_class, child=None):
     except AttributeError:
         return None
 
-
 #f do usuwania znakow format
 def remove_whitespaces(string):
     try:
